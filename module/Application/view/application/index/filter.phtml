@@ -1,0 +1,25 @@
+<?php foreach ($cities as $city):?>
+    <tr>
+        <th scope="row"><?= $city->getId();?></th>
+        <td data-id="<?= $city->getId();?>" class="city-name">
+            <span><?= $this->escapeHtml($city->getName());?></span>
+            <a href="#"><i class="fa fa-pencil"></i></a>
+            <form action="#" class="edit-city hidden">
+                <input type="text" name="name" class="form-control">
+            </form>
+        </td>
+        <td><?= $this->escapeHtml($city->getCountryCode());?></td>
+        <td><?= $this->escapeHtml($city->getDistrict());?></td>
+        <td><?= $this->escapeHtml($city->getPopulation());?></td>
+        <td><?= $this->escapeHtml($city->getCountry()->getName());?></td>
+        <td>
+            <?php  $languages = $city->getCountry()->getLanguages();
+            foreach ($languages as $language){
+                if($language->getOfficial() == 'T'){
+                    echo $this->escapeHtml($language->getLanguage()) . '<br>';
+                }
+            }
+            ?>
+        </td>
+    </tr>
+<?php endforeach;?>

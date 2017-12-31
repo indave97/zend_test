@@ -1,0 +1,176 @@
+<?php
+
+$title = 'Cities';
+
+$this->headTitle($title);
+
+?>
+
+<h1><?= $this->escapeHtml($title); ?></h1>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">
+                ID
+                <?php
+                if($get['ID'] == 'DESC'):?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['ID' => 'ASC']]); ?>">
+                        <i class="fa fa-caret-up"></i>
+                    </a>
+                <?php else :?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['ID' => 'DESC']]); ?>">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                <?php endif; ?>
+            </th>
+            <th scope="col">
+                Name
+                <?php
+                if($get['Name'] == 'DESC'):?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['Name' => 'ASC']]); ?>">
+                        <i class="fa fa-caret-up"></i>
+                    </a>
+                <?php else :?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['Name' => 'DESC']]); ?>">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                <?php endif; ?>
+            </th>
+            <th scope="col">
+                CountryCode
+                <?php
+                if($get['CountryCode'] == 'DESC'):?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['CountryCode' => 'ASC']]); ?>">
+                        <i class="fa fa-caret-up"></i>
+                    </a>
+                <?php else :?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['CountryCode' => 'DESC']]); ?>">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                <?php endif; ?>
+            </th>
+            <th scope="col">
+                District
+                <?php
+                if($get['District'] == 'DESC'):?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['District' => 'ASC']]); ?>">
+                        <i class="fa fa-caret-up"></i>
+                    </a>
+                <?php else :?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['District' => 'DESC']]); ?>">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                <?php endif; ?>
+            </th>
+            <th scope="col">
+                Population
+                <?php
+                if($get['Population'] == 'DESC'):?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['Population' => 'ASC']]); ?>">
+                        <i class="fa fa-caret-up"></i>
+                    </a>
+                <?php else :?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['Population' => 'DESC']]); ?>">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                <?php endif; ?>
+            </th>
+            <th scope="col">
+                Country
+                <?php
+                if($get['Country'] == 'DESC'):?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['Country' => 'ASC']]); ?>">
+                        <i class="fa fa-caret-up"></i>
+                    </a>
+                <?php else :?>
+                    <a href="<?= $this->url($this->route, [], ['query' => ['Country' => 'DESC']]); ?>">
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                <?php endif; ?>
+            </th>
+            <th scope="col">
+                Language
+            </th>
+        </tr>
+        <tr class="filter-row">
+            <td width="10%">
+                <form action="#" method="get">
+                    <input type="number" min="1" max="9999999" name="ID" id="ID" class="form-control">
+                </form>
+            </td>
+            <td>
+                <form action="#">
+                    <input type="text" id="Name" name="Name" class="form-control">
+                </form>
+            </td>
+            <td width="15%">
+                <form action="#">
+                    <input type="text" id="CountryCode" name="CountryCode" class="form-control">
+                </form>
+            </td>
+            <td>
+                <form action="#">
+                    <input type="text" id="District" name="District" class="form-control">
+                </form>
+            </td>
+            <td width="20%">
+                <form action="#">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="number" min="1" max="999999999" name="Population[min]" id="PopulationMin" class="form-control" placeholder="Min">
+                        </div>
+                        <div class="col-6">
+                            <input type="number" min="1" max="999999999" name="Population[max]" id="PopulationMax" class="form-control" placeholder="Max">
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td>
+                <form action="#">
+                    <input type="text" id="Country" name="Country" class="form-control">
+                </form>
+            </td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+
+    <?php foreach ($cities as $city):?>
+        <tr>
+            <th scope="row"><?= $city->getId();?></th>
+            <td data-id="<?= $city->getId();?>" class="city-name">
+                <span><?= $this->escapeHtml($city->getName());?></span>
+                <a href="#"><i class="fa fa-pencil"></i></a>
+                <form action="#" class="edit-city hidden">
+                    <input type="text" name="name" class="form-control">
+                </form>
+            </td>
+            <td><?= $this->escapeHtml($city->getCountryCode());?></td>
+            <td><?= $this->escapeHtml($city->getDistrict());?></td>
+            <td><?= $this->escapeHtml($city->getPopulation());?></td>
+            <td><?= $this->escapeHtml($city->getCountry()->getName());?></td>
+            <td>
+                <?php  $languages = $city->getCountry()->getLanguages();
+                    foreach ($languages as $language){
+                        if($language->getOfficial() == 'T'){
+                            echo $this->escapeHtml($language->getLanguage()) . '<br>';
+                        }
+                    }
+                ?>
+            </td>
+        </tr>
+    <?php endforeach;?>
+        <tr>
+            <td colspan="7">
+                <?= $this->paginationControl($cities,
+                    'Sliding',
+                    'application/partial/paginator',
+                    ['route' => 'application']); ?>
+            </td>
+
+        </tr>
+    </tbody>
+
+</table>
+
